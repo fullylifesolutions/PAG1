@@ -640,7 +640,7 @@
       <label><strong>Il tuo nome:</strong></label>
       <input id="userName" type="text" placeholder="Inserisci il tuo nome">
     </div>
-    <!-- Pulsante SPP rimosso - PAG LITE -->
+    <!-- Pulsante SPP rimosso - PAG Lite -->
   </div>
   
   <div class="disclaimer">
@@ -681,6 +681,17 @@
   </div>
   
   <div class="panel">
+    <h2>🛡️ Backup & Sicurezza</h2>
+    <p style="opacity: 0.8; margin-bottom: 15px; font-size: 14px;">
+      ⚠️ I tuoi dati sono salvati solo su questo dispositivo. Fai backup regolari!
+    </p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <button onclick="exportFullBackup()" style="flex: 1; min-width: 200px;">📥 Esporta Backup Completo</button>
+      <button onclick="importFullBackup()" class="secondary" style="flex: 1; min-width: 200px;">📤 Ripristina Backup</button>
+    </div>
+  </div>
+  
+  <div class="panel">
     <h2 style="text-align: center; margin-bottom: 20px;">Seleziona una categoria</h2>
     <div class="category-buttons">
       <button class="category-btn" onclick="selectCategory('lavoro')">💼 Lavoro</button>
@@ -697,7 +708,67 @@
   </div>
   <button class="secondary" onclick="backToHomeFromSPP()">← Torna alla home</button>
   
-  <!-- SEZIONE SPP RIMOSSA - PAG LITE -->
+  <h1>📋 Struttura Psicofisiologica Primaria</h1>
+  <p class="subtitle">Seleziona le tue caratteristiche per visualizzare le spiegazioni</p>
+  
+  <div class="panel">
+    <h2>Parametri</h2>
+    
+    <div class="field">
+      <label><strong>1. Sessualità:</strong></label>
+      <select id="sppSessualita" class="spp-select" onchange="updateSPPDisplay()">
+        <option value="">-- Seleziona --</option>
+        <option value="maschio">Maschio</option>
+        <option value="femmina">Femmina</option>
+      </select>
+    </div>
+    
+    <div class="field">
+      <label><strong>2. Lateralità:</strong></label>
+      <select id="sppLateralita" class="spp-select" onchange="updateSPPDisplay()">
+        <option value="">-- Seleziona --</option>
+        <option value="destrimane">Destrimane</option>
+        <option value="mancino">Mancino</option>
+      </select>
+    </div>
+    
+    <div class="field">
+      <label><strong>3. Bisogni:</strong></label>
+      <select id="sppBisogni" class="spp-select" onchange="updateSPPDisplay()">
+        <option value="">-- Seleziona --</option>
+        <option value="protezione">Protezione</option>
+        <option value="identificazione">Identificazione</option>
+        <option value="spazialita">Spazialità</option>
+      </select>
+    </div>
+    
+    <div class="field">
+      <label><strong>4. Foglietto:</strong></label>
+      <select id="sppFoglietto" class="spp-select" onchange="updateSPPDisplay()">
+        <option value="">-- Seleziona --</option>
+        <option value="boccone">Boccone</option>
+        <option value="attacco">Attacco</option>
+        <option value="gratificazione">Gratificazione</option>
+        <option value="socialita">Socialità</option>
+      </select>
+    </div>
+    
+    <div class="field">
+      <label><strong>5. Intensità:</strong></label>
+      <select id="sppIntensita" class="spp-select" onchange="updateSPPDisplay()">
+        <option value="">-- Seleziona --</option>
+        <option value="attivazione">Attivazione</option>
+        <option value="inibizione">Inibizione</option>
+      </select>
+    </div>
+    
+    <button onclick="saveSPP()">💾 Salva la mia struttura</button>
+  </div>
+  
+  <div class="panel" id="sppPdfContainer" style="display: none;">
+    <h2>Spiegazioni delle caratteristiche selezionate</h2>
+    <div id="sppPdfViewer"></div>
+  </div>
 </div>
 
 <!-- CATEGORY SCREEN -->
@@ -749,12 +820,12 @@
   <div class="panel" id="valuesPanel">
     <h2>Inserisci i valori (0–100)</h2>
     <div class="values-grid">
-      <div class="field"><label>Priorità</label><input id="priorita" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
-      <div class="field"><label>Intensità</label><input id="intensita" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
-      <div class="field"><label>Riconoscimento</label><input id="riconoscimento" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
-      <div class="field"><label>Richieste</label><input id="richieste" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
-      <div class="field"><label>Contributi</label><input id="contributi" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
-      <div class="field"><label>Soddisfazione</label><input id="soddisfazione" type="number" value="50" min="0" max="100" onfocus="this.select()"></div>
+      <div class="field"><label>Priorità</label><input id="priorita" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
+      <div class="field"><label>Intensità</label><input id="intensita" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
+      <div class="field"><label>Riconoscimento</label><input id="riconoscimento" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
+      <div class="field"><label>Richieste</label><input id="richieste" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
+      <div class="field"><label>Contributi</label><input id="contributi" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
+      <div class="field"><label>Soddisfazione</label><input id="soddisfazione" type="number" value="50" min="1" max="100" onfocus="this.select()" oninput="this.value = Math.max(1, Math.min(100, this.value))"></div>
     </div>
     <button onclick="updateChart()">Aggiorna visualizzazione</button>
   </div>
@@ -869,8 +940,117 @@ function saveUserInfo() {
 }
 
 // SPP Functions
-// ===== FUNZIONI SPP RIMOSSE - PAG LITE =====
+function goToSPP() {
+  saveUserInfo();
+  document.getElementById('homeScreen').classList.add('hidden');
+  document.getElementById('categoryScreen').classList.add('hidden');
+  document.getElementById('profileScreen').classList.add('hidden');
+  document.getElementById('sppScreen').classList.remove('hidden');
+  
+  // Carica valori salvati
+  document.getElementById('sppSessualita').value = state.spp.sessualita || '';
+  document.getElementById('sppLateralita').value = state.spp.lateralita || '';
+  document.getElementById('sppBisogni').value = state.spp.bisogni || '';
+  document.getElementById('sppFoglietto').value = state.spp.foglietto || '';
+  document.getElementById('sppIntensita').value = state.spp.intensita || '';
+  
+  updateSPPDisplay();
+}
 
+function backToHomeFromSPP() {
+  document.getElementById('sppScreen').classList.add('hidden');
+  document.getElementById('homeScreen').classList.remove('hidden');
+  loadReminders();
+  loadAppointmentsList();
+}
+
+function updateSPPDisplay() {
+  const sessualita = document.getElementById('sppSessualita').value;
+  const lateralita = document.getElementById('sppLateralita').value;
+  const bisogni = document.getElementById('sppBisogni').value;
+  const foglietto = document.getElementById('sppFoglietto').value;
+  const intensita = document.getElementById('sppIntensita').value;
+  
+  if (sessualita || lateralita || bisogni || foglietto || intensita) {
+    document.getElementById('sppPdfContainer').style.display = 'block';
+    
+    let displayText = '<div style="padding: 20px; line-height: 1.8;">';
+    displayText += '<p style="color: #f5a623; font-weight: bold; margin-bottom: 15px;">Hai selezionato:</p>';
+    
+    if (sessualita) displayText += `<p>• <strong>Sessualità:</strong> ${sessualita.charAt(0).toUpperCase() + sessualita.slice(1)}</p>`;
+    if (lateralita) displayText += `<p>• <strong>Lateralità:</strong> ${lateralita.charAt(0).toUpperCase() + lateralita.slice(1)}</p>`;
+    if (bisogni) displayText += `<p>• <strong>Bisogni:</strong> ${bisogni.charAt(0).toUpperCase() + bisogni.slice(1)}</p>`;
+    if (foglietto) displayText += `<p>• <strong>Foglietto:</strong> ${foglietto.charAt(0).toUpperCase() + foglietto.slice(1)}</p>`;
+    if (intensita) displayText += `<p>• <strong>Intensità:</strong> ${intensita.charAt(0).toUpperCase() + intensita.slice(1)}</p>`;
+    
+    // Mappa PDF in base alla selezione
+    const pdfList = [];
+    
+    // Sessualità
+    if (sessualita === 'maschio') {
+      pdfList.push({nome: 'MASCHIO.pdf', titolo: 'Maschio'});
+      if (lateralita === 'destrimane') pdfList.push({nome: 'MASCHIO_DX.pdf', titolo: 'Maschio Destrimane'});
+      if (lateralita === 'mancino') pdfList.push({nome: 'MASCHIO_SX.pdf', titolo: 'Maschio Mancino'});
+    } else if (sessualita === 'femmina') {
+      pdfList.push({nome: 'FEMMINA.pdf', titolo: 'Femmina'});
+      if (lateralita === 'destrimane') pdfList.push({nome: 'FEMMINA_DX.pdf', titolo: 'Femmina Destrimane'});
+      if (lateralita === 'mancino') pdfList.push({nome: 'FEMMINA_SX.pdf', titolo: 'Femmina Mancina'});
+    }
+    
+    // Interazione di genere
+    if (sessualita) {
+      pdfList.push({nome: 'INTERAZIONE_GENERE.pdf', titolo: 'Interazione Relazionale di Genere'});
+    }
+    
+    // Bisogni
+    if (bisogni === 'protezione') pdfList.push({nome: 'PROTEZIONE.pdf', titolo: 'Protezione'});
+    if (bisogni === 'identificazione') pdfList.push({nome: 'IDENTIFICAZIONE.pdf', titolo: 'Identificazione'});
+    if (bisogni === 'spazialita') pdfList.push({nome: 'SPAZIALITA_.pdf', titolo: 'Spazialità'});
+    
+    // Foglietto
+    if (foglietto === 'boccone') pdfList.push({nome: 'BOCCONE.pdf', titolo: 'Boccone'});
+    if (foglietto === 'attacco') pdfList.push({nome: 'ATTACCO.pdf', titolo: 'Attacco'});
+    if (foglietto === 'gratificazione') pdfList.push({nome: 'GRATIFICAZIONE.pdf', titolo: 'Gratificazione'});
+    if (foglietto === 'socialita') pdfList.push({nome: 'SOCIALITA_.pdf', titolo: 'Socialità'});
+    
+    // Intensità
+    if (intensita === 'attivazione') pdfList.push({nome: 'ATTIVAZIONE.pdf', titolo: 'Attivazione'});
+    if (intensita === 'inibizione') pdfList.push({nome: 'INIBIZIONE.pdf', titolo: 'Inibizione'});
+    
+    // Mostra PDF
+    if (pdfList.length > 0) {
+      displayText += '<div style="margin-top: 25px; padding-top: 20px; border-top: 2px solid #f5a623;">';
+      displayText += '<p style="color: #f5a623; font-weight: bold; margin-bottom: 8px;">📄 Documenti PDF di Approfondimento:</p>';
+      displayText += '<p style="font-size: 13px; opacity: 0.8; margin-bottom: 15px;">💡 Clicca per visualizzare il PDF</p>';
+      
+      pdfList.forEach(pdf => {
+        displayText += `
+          <div style="margin: 10px 0; padding: 12px; background: #2a2a2a; border-radius: 6px; border-left: 3px solid #f5a623; cursor: pointer;"
+               onclick="openPDFViewer('./pdf/${pdf.nome}', '${pdf.titolo}')">
+            <div style="color: #f5f5f5; text-decoration: none; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 24px;">📕</span>
+                <span style="font-weight: bold;">${pdf.titolo}</span>
+              </div>
+              <span style="font-size: 20px; opacity: 0.6;">👁️</span>
+            </div>
+          </div>`;
+      });
+      
+      displayText += '</div>';
+    } else {
+      displayText += '<p style="margin-top: 20px; opacity: 0.7; font-style: italic;">Seleziona le caratteristiche per vedere i PDF di approfondimento.</p>';
+    }
+    
+    displayText += '</div>';
+    
+    document.getElementById('sppPdfViewer').innerHTML = displayText;
+  } else {
+    document.getElementById('sppPdfContainer').style.display = 'none';
+  }
+}
+
+// Funzione per mostrare pulsante chiudi PDF
 // Visualizzatore PDF personalizzato con PDF.js
 let currentPdfDoc = null;
 let currentPageNum = 1;
@@ -1204,6 +1384,8 @@ function backToHome() {
   loadAppointmentsList();
 }
 
+let multiSelectMode = false;
+
 function loadProfileList() {
   const list = document.getElementById('profileList');
   const profiles = state.profiles[currentCategory];
@@ -1213,19 +1395,104 @@ function loadProfileList() {
     return;
   }
   
-  list.innerHTML = profiles.map((profile, index) => `
-    <div class="profile-item">
-      <div class="profile-info">
-        <strong>${profile.description}</strong>
-        <small>${formatDate(profile.date)}</small>
-      </div>
-      <div class="profile-actions">
-        <button onclick="viewProfile(${index})">👁️ Visualizza</button>
-        <button onclick="exportProfileById(${index})">📤 Esporta</button>
-        <button class="secondary" onclick="deleteProfile(${index})">🗑️</button>
+  // Pulsanti selezione multipla
+  const multiSelectBtn = `
+    <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <button onclick="toggleMultiSelectUser()" id="multiSelectBtn" style="background: #ba975c; padding: 10px 16px; border-radius: 6px; border: none; color: #f5f5f5; font-weight: bold; cursor: pointer;">
+        ☐ Seleziona multipli
+      </button>
+      <button onclick="exportMultipleUser()" id="multiExportBtn" style="display: none; background: #f5a623; padding: 10px 20px; border-radius: 6px; border: none; color: #1a1a1a; font-weight: bold; cursor: pointer;">
+        📤 Esporta selezionati (<span id="selectedCount">0</span>)
+      </button>
+    </div>
+  `;
+  
+  list.innerHTML = multiSelectBtn + profiles.map((profile, index) => `
+    <div class="profile-item" style="display: flex; align-items: center; gap: 10px;">
+      <input type="checkbox" class="profile-checkbox" data-index="${index}" style="display: none; width: 20px; height: 20px; cursor: pointer;" onchange="updateSelectedCountUser()">
+      <div style="flex: 1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div class="profile-info">
+          <strong>${profile.description}</strong>
+          <small>${formatDate(profile.date)}</small>
+        </div>
+        <div class="profile-actions">
+          <button onclick="viewProfile(${index})">👁️ Visualizza</button>
+          <button onclick="exportProfileById(${index})">📤 Esporta</button>
+          <button class="secondary" onclick="deleteProfile(${index})">🗑️</button>
+        </div>
       </div>
     </div>
   `).join('');
+}
+
+function toggleMultiSelectUser() {
+  multiSelectMode = !multiSelectMode;
+  const checkboxes = document.querySelectorAll('.profile-checkbox');
+  const btn = document.getElementById('multiSelectBtn');
+  const exportBtn = document.getElementById('multiExportBtn');
+  
+  checkboxes.forEach(cb => {
+    cb.style.display = multiSelectMode ? 'inline-block' : 'none';
+    cb.checked = false;
+  });
+  
+  btn.textContent = multiSelectMode ? '✕ Annulla selezione' : '☐ Seleziona multipli';
+  btn.style.background = multiSelectMode ? '#e74c3c' : '#ba975c';
+  exportBtn.style.display = 'none';
+  updateSelectedCountUser();
+}
+
+function updateSelectedCountUser() {
+  const checked = document.querySelectorAll('.profile-checkbox:checked');
+  document.getElementById('selectedCount').textContent = checked.length;
+  document.getElementById('multiExportBtn').style.display = checked.length > 0 ? 'block' : 'none';
+}
+
+function exportMultipleUser() {
+  const checked = Array.from(document.querySelectorAll('.profile-checkbox:checked'));
+  const indices = checked.map(cb => parseInt(cb.dataset.index));
+  const profiles = state.profiles[currentCategory];
+  const userName = document.getElementById('userName').value || 'Utente';
+  
+  const selectedProfiles = indices.map(i => {
+    const p = profiles[i];
+    return {
+      descrizione: p.description,
+      data: p.date,
+      considerazioni: p.considerations || '',
+      valori: {
+        priorita: p.values[0],
+        intensita: p.values[1],
+        riconoscimento: p.values[2],
+        richieste: p.values[3],
+        contributi: p.values[4],
+        soddisfazione: p.values[5]
+      }
+    };
+  });
+  
+  const exportData = {
+    utente: userName,
+    exportDate: new Date().toISOString().split('T')[0],
+    categoria: currentCategory,
+    profili: selectedProfiles
+  };
+  
+  const jsonText = JSON.stringify(exportData, null, 2);
+  const fileName = `PAG_${userName}_${currentCategory}_${selectedProfiles.length}profili_${exportData.exportDate}.json`;
+  
+  const blob = new Blob([jsonText], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  toggleMultiSelectUser();
+  alert(`✅ ${selectedProfiles.length} profili esportati con successo!`);
+  
+  showBackupReminder(); // Mostra reminder backup
 }
 
 function loadTimelineCharts() {
@@ -1552,6 +1819,7 @@ function saveProfile() {
   
   saveState();
   alert('Profilo salvato!');
+  showBackupReminder(); // Reminder backup dopo modifica
   backToCategory();
   
   // Aggiorna lista e timeline immediatamente
@@ -1564,6 +1832,7 @@ function deleteProfile(index) {
   if (confirm('Sei sicuro di voler eliminare questo profilo?')) {
     state.profiles[currentCategory].splice(index, 1);
     saveState();
+    showBackupReminder(); // Reminder backup dopo eliminazione
     loadProfileList();
     loadTimelineCharts();
     loadReminders();
@@ -1910,6 +2179,116 @@ function updateChart() {
   
   radarChart.data.datasets[0].data = values;
   radarChart.update();
+}
+
+// ===== BACKUP & REMINDER =====
+function showBackupReminder() {
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    padding: 20px;
+  `;
+  
+  const content = document.createElement('div');
+  content.style.cssText = `
+    background: #2f2f2f;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    border: 2px solid #f5a623;
+  `;
+  
+  content.innerHTML = `
+    <h2 style="color: #f5a623; margin-top: 0; text-align: center;">💾 Backup Consigliato</h2>
+    <p style="text-align: center; margin: 20px 0;">
+      Hai fatto delle modifiche.<br>
+      Vuoi fare un backup ora per sicurezza?
+    </p>
+    <div style="display: flex; gap: 10px; margin-top: 20px;">
+      <button onclick="this.closest('[style*=fixed]').remove();" style="flex: 1; padding: 12px; background: #555; color: #f5f5f5; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+        ✕ Più tardi
+      </button>
+      <button onclick="exportFullBackup(); this.closest('[style*=fixed]').remove();" style="flex: 1; padding: 12px; background: #f5a623; color: #1a1a1a; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+        📥 Esporta Backup
+      </button>
+    </div>
+  `;
+  
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+}
+
+function exportFullBackup() {
+  const userName = document.getElementById('userName').value || 'Utente';
+  const backupData = {
+    version: '1.0',
+    type: 'utente',
+    exportDate: new Date().toISOString(),
+    userName: userName,
+    state: state
+  };
+  
+  const jsonText = JSON.stringify(backupData, null, 2);
+  const fileName = `PAG_Backup_Completo_${userName}_${new Date().toISOString().split('T')[0]}.json`;
+  
+  const blob = new Blob([jsonText], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  alert('✅ Backup completo esportato!');
+}
+
+function importFullBackup() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (!confirm('⚠️ ATTENZIONE: Tutti i dati attuali saranno sostituiti con quelli del backup. Continuare?')) {
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const backupData = JSON.parse(event.target.result);
+        
+        if (backupData.version && backupData.state) {
+          state = backupData.state;
+          saveState();
+          
+          document.getElementById('userName').value = backupData.userName || '';
+          
+          alert('✅ Backup ripristinato con successo!');
+          location.reload();
+        } else {
+          alert('❌ File backup non valido');
+        }
+      } catch (err) {
+        alert('❌ Errore nel leggere il file backup');
+      }
+    };
+    reader.readAsText(file);
+  };
+  
+  input.click();
 }
 
 loadState();
